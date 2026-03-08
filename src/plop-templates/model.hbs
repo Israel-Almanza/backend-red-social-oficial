@@ -1,0 +1,26 @@
+import {
+  Column,
+  Model,
+  Table,
+  DataType,
+} from 'sequelize-typescript';
+import { setTimestamps } from '@/infrastructure/lib/utils';
+
+@setTimestamps()
+@Table({
+  tableName: 'sys_{{name}}',
+  paranoid: true,
+  timestamps: true,
+})
+export class {{pascalCase name}}Model extends Model {
+
+  {{#each fields}}
+  @Column({
+    type: DataType.{{this.type}},
+    allowNull: {{this.allowNull}},
+    {{#if this.field}}field: '{{this.field}}',{{/if}}
+  })
+  {{this.name}}: {{this.tsType}};
+  {{/each}}
+
+}

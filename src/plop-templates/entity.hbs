@@ -1,0 +1,8 @@
+export class {{pascalCase name}} {
+  constructor(
+    public id: string,
+{{#each fields}}
+    public {{this.name}}: {{this.tsType}},
+{{/each}}
+  ) {}
+}

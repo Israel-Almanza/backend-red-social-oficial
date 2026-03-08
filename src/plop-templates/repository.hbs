@@ -1,0 +1,9 @@
+import { {{pascalCase name}} } from '../entities/{{name}}.entity';
+import { Transaction } from 'sequelize';
+
+export interface {{pascalCase name}}Repository {
+  createOrUpdate(item: {{pascalCase name}}, t?: Transaction): Promise<{{pascalCase name}}>;
+  findAll(params: any): Promise<{ count: number; rows: {{pascalCase name}}[] }>;
+  findOne?(params: any): Promise<{{pascalCase name}} | null>;
+  deleteItem?(id: number, t?: Transaction): Promise<number>;
+}

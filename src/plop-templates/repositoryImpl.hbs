@@ -1,0 +1,47 @@
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
+import { {{pascalCase name}}Model } from '../database/models/{{name}}.model';
+import { {{pascalCase name}}Repository } from '../../domain/repositories/{{name}}.repository';
+import { {{pascalCase name}} } from '../../domain/entities/{{name}}.entity';
+import { GenericRepository } from '../database/generic.repository';
+import { Transaction } from 'sequelize';
+import { toJSON, getQuery } from '../lib/utils';
+
+@Injectable()
+export class {{pascalCase name}}RepositoryImpl implements {{pascalCase name}}Repository {
+  constructor(
+    @InjectModel({{pascalCase name}}Model)
+    private readonly {{name}}Model: typeof {{pascalCase name}}Model,
+
+    private readonly genericRepo: GenericRepository,
+  ) {}
+
+  async findOne(params = {}): Promise<{{pascalCase name}}> {
+    const query: any = {};
+    query.where = params;
+    const result = await this.{{name}}Model.findOne(query);
+    return result?.toJSON();
+  }
+
+  async createOrUpdate(
+    item: {{pascalCase name}},
+    t?: Transaction,
+  ): Promise<{{pascalCase name}}> {
+    return await this.genericRepo.createOrUpdate(item, this.{{name}}Model, t);
+  }
+
+  async deleteItem(id: number, t?: Transaction): Promise<number> {
+    return await this.genericRepo.deleteItem(id, this.{{name}}Model, t);
+  }
+
+  async findAll(params: any): Promise<{ count: number; rows: {{pascalCase name}}[] }> {
+    const query = getQuery(params);
+
+    if (params.id) {
+      query.where.id = params.id;
+    }
+
+    const result = await this.{{name}}Model.findAndCountAll(query);
+    return toJSON(result);
+  }
+}
