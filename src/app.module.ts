@@ -67,6 +67,7 @@ import { ConversacionModel } from './infrastructure/database/models/social/conve
 import { ConversacionController } from './presentation/controllers/social/conversacion.controller';
 import { ConversacionRepositoryImpl } from './infrastructure/repositories/social/conversacion.repository.impl';
 import { ConversacionService } from './application/services/social/conversacion.service';
+import { ChatGateway } from './presentation/gateways/chat.gateway';
 
 @Module({
   imports: [
@@ -78,7 +79,7 @@ import { ConversacionService } from './application/services/social/conversacion.
       MensajeModel,
       ConversacionModel,
     ]), // ✅ agrega UsuarioModel
-    ChatModule
+    //ChatModule
   ],
   controllers: [UsuarioController, ClienteController, ParametroController, MenuController,
     RolController, PermisoController, AuthController, ItemController,
@@ -111,6 +112,7 @@ import { ConversacionService } from './application/services/social/conversacion.
 
     UsuarioConversacionService,
     MensajeService,
+    ChatGateway,
     // ClienteService,   // ✅ si lo estás usando,
     TransactionService     // ✅ ESTE ERA EL QUE FALTABA
   ],

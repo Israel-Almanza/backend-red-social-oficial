@@ -13,15 +13,15 @@ import { MensajeModel } from './models/social/mensaje.model';
 // importa todos los modelos...
 
 export function setupAssociations() {
-  PersonaModel.hasOne(UsuarioModel, {foreignKey: { name: 'idPersona' },as: 'usuario'});
+  PersonaModel.hasOne(UsuarioModel, { foreignKey: { name: 'idPersona' }, as: 'usuario' });
 
-  UsuarioModel.belongsTo(PersonaModel, {foreignKey: { name: 'idPersona' },as: 'persona'});
+  UsuarioModel.belongsTo(PersonaModel, { foreignKey: { name: 'idPersona' }, as: 'persona' });
 
   UsuarioModel.belongsTo(EntidadModel, { foreignKey: { name: 'idEntidad' }, as: 'entidad' });
-  EntidadModel.hasMany(UsuarioModel,  { foreignKey: { name: 'idEntidad' }, as: 'usuarios' });
+  EntidadModel.hasMany(UsuarioModel, { foreignKey: { name: 'idEntidad' }, as: 'usuarios' });
 
   // Roles de usuario
-  UsuarioModel.belongsToMany(RolModel,  { through: { model: RolUsuarioModel, unique: false }, as: 'roles', foreignKey: 'idUsuario' });
+  UsuarioModel.belongsToMany(RolModel, { through: { model: RolUsuarioModel, unique: false }, as: 'roles', foreignKey: 'idUsuario' });
   RolModel.belongsToMany(UsuarioModel, { through: { model: RolUsuarioModel, unique: false }, as: 'usuarios', foreignKey: 'idRol' });
 
   RolModel.belongsToMany(MenuModel, { through: { model: RolMenuModel, unique: false }, as: 'menus', foreignKey: 'idRol' });
@@ -34,17 +34,29 @@ export function setupAssociations() {
 
   // Definir las relaciones entre modelos
 
-      UsuarioConversacionModel.belongsTo(ConversacionModel, {
-        foreignKey: 'conversacionId',
-        as: 'conversacion' // Alias para usar en las consultas
-      });
+  UsuarioConversacionModel.belongsTo(ConversacionModel, {
+    foreignKey: 'conversacionId',
+    as: 'conversacion' // Alias para usar en las consultas
+  });
 
-      ConversacionModel.hasMany(MensajeModel, { // Asociación con Message
-        foreignKey: 'conversacionId', // La clave foránea en Message
-        as: 'mensajes' // Alias para usar en las consultas
-      });
-      MensajeModel.belongsTo(UsuarioModel, { // Asociación con Message
-        foreignKey: 'userCreated', // La clave foránea en Message
-        as: 'usuarioCreador' // Alias para usar en las consultas
-      });
+  // conversacion -> participantes
+  ConversacionModel.hasMany(UsuarioConversacionModel, {
+    foreignKey: 'conversacionId',
+    as: 'participantes'
+  });
+
+  UsuarioConversacionModel.belongsTo(UsuarioModel, {
+    foreignKey: 'usuarioId',
+    as: 'participante'
+  });
+
+
+  ConversacionModel.hasMany(MensajeModel, { // Asociación con Message
+    foreignKey: 'conversacionId', // La clave foránea en Message
+    as: 'mensajes' // Alias para usar en las consultas
+  });
+  MensajeModel.belongsTo(UsuarioModel, { // Asociación con Message
+    foreignKey: 'userCreated', // La clave foránea en Message
+    as: 'usuarioCreador' // Alias para usar en las consultas
+  });
 }

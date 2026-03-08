@@ -66,12 +66,12 @@ export class MensajeRepositoryImpl implements MensajeRepository {
       }
     }
 
-    query.include = [
+    /* query.include = [
       {
         model: UsuarioModel,
         as: 'usuarioCreador',
       }
-    ];
+    ]; */
 
     const result = await this.mensajeModel.findAndCountAll(query);
     return toJSON(result);

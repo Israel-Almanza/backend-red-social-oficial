@@ -41,7 +41,7 @@ export class UsuarioConversacionRepositoryImpl implements UsuarioConversacionRep
     const query = getQuery(params);
 
     query.distinct = true;
-   //  query.col = 'social_usuario_conversacion.conversacion_id';
+    //  query.col = 'social_usuario_conversacion.conversacion_id';
 
     if (params.id) {
       query.where.id = params.id;
@@ -89,11 +89,29 @@ export class UsuarioConversacionRepositoryImpl implements UsuarioConversacionRep
             ],
             limit: 1,
             order: [['createdAt', 'DESC']], // último mensaje
-            include: [
+            /* include: [
               {
                 model: UsuarioModel,
                 as: 'usuarioCreador',
-                attributes: ['id', 'usuario','imagenUrl']
+                attributes: ['id', 'usuario', 'imagenUrl']
+              }
+            ] */
+          },
+          // 🔹 AQUÍ TRAEMOS EL OTRO USUARIO
+          {
+            model: UsuarioConversacionModel,
+            as: 'participantes',
+            attributes: ['usuarioId'],
+            where: {
+              usuarioId: {
+                [Op.ne]: params.usuarioId // todos los partipantes menos yo
+              }
+            },
+            include: [
+              {
+                model: UsuarioModel,
+                as: 'participante',
+                attributes: ['id', 'usuario', 'imagenUrl']
               }
             ]
           }

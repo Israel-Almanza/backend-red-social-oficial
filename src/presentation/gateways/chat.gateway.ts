@@ -19,7 +19,7 @@ import { Server, Socket } from 'socket.io';
 export class ChatGateway
   implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(
-    private readonly mensajeService:  MensajeService
+    private readonly mensajeService: MensajeService
   ) { }
   @WebSocketServer()
   server: Server;
@@ -51,8 +51,8 @@ export class ChatGateway
   }
 
   @SubscribeMessage('mensaje')
-  handleMensaje(
-    @MessageBody() data: any,
+  async handleMensaje(
+    @MessageBody() datos: any,
     @ConnectedSocket() socket: Socket,
   ) {
     const {
@@ -60,17 +60,15 @@ export class ChatGateway
       remitenteId,
       receptorId,
       contenido,
-    } = data;
+    } = datos;
 
-    // console.log('data :::: ', data)
+    datos.userCreated = datos.remitenteId
+    console.log('datos enviados ::: ', datos)
+    const mensajeGuardado = await this.mensajeService.crear(datos);
+    console.log('mensaje gurdadado ', mensajeGuardado)
 
     // Emitir a todos en la conversación
-    this.server.to(conversacionId).emit('mensaje', {
-      remitenteId,
-      receptorId,
-      contenido,
-      createdAt: new Date().toISOString(),
-    });
+    this.server.to(conversacionId).emit('mensaje', mensajeGuardado);
 
     // Notificar al receptor
     /* this.server.to(receptorId).emit('nuevo-mensaje', {
