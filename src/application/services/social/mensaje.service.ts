@@ -50,8 +50,6 @@ export class MensajeService {
                     )
                 );
                 datos.conversacionId = conversacionCreada.id
-                // obersacion
-                response = await this.mensajeRepository.createOrUpdate(datos);
             } else {
                 // si existe conversacion 
                 const existeConversacion: any = await this.usuarioConversacionRepository.existeConversacionEntreUsuarios({
@@ -59,10 +57,10 @@ export class MensajeService {
                 })
                 if (existeConversacion?.length > 0) {
                     datos.conversacionId = existeConversacion[0].conversacion_id
-                    // obersacion
-                    response = await this.mensajeRepository.createOrUpdate(datos);
                 }
             }
+
+            response = await this.mensajeRepository.createOrUpdate(datos);
 
             // const result = await this.mensajeRepository.createOrUpdate(datos, t);
             await this.transaction.commit(t);

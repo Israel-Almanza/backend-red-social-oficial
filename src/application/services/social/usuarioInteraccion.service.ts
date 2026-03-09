@@ -21,7 +21,7 @@ export class UsuarioInteraccionService {
             t = await this.transaction.create();
 
             datos.tipo = 'like'
-            console.log('imprimir ', datos)
+ 
             const result = await this.usuarioInteraccionRepository.createOrUpdate(datos, t);
             // buscar si ya existe like inverso
             let likeExistente = null
@@ -38,8 +38,6 @@ export class UsuarioInteraccionService {
                     tipo: 'like'
                 });
             }
-
-            console.log('existe like ya ', likeExistente)
 
             if (likeExistente) {
 
@@ -58,13 +56,6 @@ export class UsuarioInteraccionService {
                         })
                     )
                 );
-
-                
-                /* return {
-
-                    // match: true,
-                    conversacionId: Number(conversacion.id) || 0
-                };*/
             }
 
             await this.transaction.commit(t);
