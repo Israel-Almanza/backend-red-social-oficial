@@ -84,7 +84,7 @@ export class UsuarioConversacionRepositoryImpl implements UsuarioConversacionRep
               'id',
               'contenido',
               'userCreated',
-              // 'usuarioCreado',
+              'noLeido',
               'createdAt'
             ],
             limit: 1,

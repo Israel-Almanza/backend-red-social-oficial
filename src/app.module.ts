@@ -68,6 +68,11 @@ import { ConversacionController } from './presentation/controllers/social/conver
 import { ConversacionRepositoryImpl } from './infrastructure/repositories/social/conversacion.repository.impl';
 import { ConversacionService } from './application/services/social/conversacion.service';
 import { ChatGateway } from './presentation/gateways/chat.gateway';
+import { socialUsuarioController } from './presentation/controllers/social/usuarioSocial.controller';
+import { UsuarioInteraccionModel } from './infrastructure/database/models/social/usuarioInteraccion.model';
+import { UsuarioInteraccionController } from './presentation/controllers/social/usuarioInteraccion.controller';
+import { UsuarioInteraccionRepositoryImpl } from './infrastructure/repositories/social/usuarioInteraccion.repository.impl';
+import { UsuarioInteraccionService } from './application/services/social/usuarioInteraccion.service';
 
 @Module({
   imports: [
@@ -78,12 +83,16 @@ import { ChatGateway } from './presentation/gateways/chat.gateway';
       UsuarioConversacionModel,
       MensajeModel,
       ConversacionModel,
+      UsuarioInteraccionModel,
     ]), // ✅ agrega UsuarioModel
     //ChatModule
   ],
   controllers: [UsuarioController, ClienteController, ParametroController, MenuController,
     RolController, PermisoController, AuthController, ItemController,
-    UsuarioConversacionController, MensajeController, ConversacionController], // ✅ agrega UsuarioController
+
+    UsuarioConversacionController, MensajeController, ConversacionController, socialUsuarioController
+    , UsuarioInteraccionController 
+  ], // ✅ agrega UsuarioController
   providers: [
     GenericRepository,
     ClienteRepositoryImpl,
@@ -97,9 +106,11 @@ import { ChatGateway } from './presentation/gateways/chat.gateway';
     PermisoRepositoryImpl,
     AuthRepositoryImpl,
     ItemRepositoryImpl,
+
     UsuarioConversacionRepositoryImpl,
     MensajeRepositoryImpl,
     ConversacionRepositoryImpl,
+    UsuarioInteraccionRepositoryImpl,
 
     UsuarioService,   // ✅ OBLIGATORIO
     ParametroService,
@@ -108,8 +119,9 @@ import { ChatGateway } from './presentation/gateways/chat.gateway';
     PermisoService,
     AuthService,
     ItemService,
-    ConversacionService,
 
+    UsuarioInteraccionService,
+    ConversacionService,
     UsuarioConversacionService,
     MensajeService,
     ChatGateway,
